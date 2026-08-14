@@ -27,4 +27,9 @@ export const documents = [
     id: "policy-payment",
     text: "Payment options: Credit card, debit card, UPI, aur Cash on Delivery (COD) available hai. COD orders par 20 rupee extra convenience fee lagta hai.",
   },
+
+  {
+    id: "friend-naved",
+    text: "Naved is my friend."
+  }
 ];
