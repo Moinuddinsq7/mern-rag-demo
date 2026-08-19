@@ -6,6 +6,7 @@ import { embed } from "./embedding.js";
 import { retrieve } from "./retrieve.js";
 import { generateAnswer } from "./generate.js";
 import { documents } from "./data/documents.js";
+import { buildIndex, loadIndex } from "./faiss-index.js";
 
 const app = express();
 const PORT = process.env.PORT || 5000;
@@ -14,14 +15,17 @@ app.use(cors());
 app.use(express.json());
 
 await connectDB();
+loadIndex();
 
 app.post("/api/ingest", async (req, res) => {
   try {
     await Chunk.deleteMany({});
     const chunks = chunkDocuments(documents);
+    const vectors = [];
 
     for (const chunk of chunks) {
       const vector = await embed(chunk.content);
+      vectors.push(vector);
       await Chunk.create({
         docId: chunk.docId,
         chunkId: chunk.chunkId,
@@ -29,6 +33,8 @@ app.post("/api/ingest", async (req, res) => {
         vector,
       });
     }
+
+    buildIndex(chunks, vectors);
 
     res.json({
       message: "Ingestion complete!",

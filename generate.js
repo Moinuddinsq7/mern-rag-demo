@@ -20,13 +20,23 @@ ${context}
 Question: ${query}
 
 Instructions:
-- Answer in Hindi/Hinglish
+- Answer in the same language as the question
 - Be concise and direct
 - If the question asks for a count, count from the context and give the number
 - If the question asks for a list, list all relevant items from context
 - Use ONLY information from the context above
 
 Answer:`;
+
+  console.log("\n========== LLM CONTEXT START ==========");
+  console.log("Query:", query);
+  console.log("Relevant Chunks:", relevantChunks.length);
+  relevantChunks.forEach((c, i) => {
+    console.log(`  [${i + 1}] Score: ${c.score.toFixed(4)} | ${c.chunkId} | ${c.content.substring(0, 80)}...`);
+  });
+  console.log("\nFull Prompt Sent to LLM:");
+  console.log(prompt);
+  console.log("========== LLM CONTEXT END ==========\n");
 
   const res = await fetch("http://localhost:11434/api/generate", {
     method: "POST",

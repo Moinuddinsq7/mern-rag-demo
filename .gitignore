@@ -25,5 +25,9 @@ npm-debug.log*
 # Hugging Face / Xenova model cache
 .cache/
 
+# FAISS index (generated at runtime)
+faiss_store.index
+faiss_store.json
+
 # Claude Code config (local only)
 .claude/settings.local.json
